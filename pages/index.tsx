@@ -22,6 +22,7 @@ const Home: NextPage = () => {
                 <title>Nines Score</title>
                 <meta name="description" content="Keep track of your nines score" />
                 <link rel="icon" href="/favicon.ico" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
             </Head>
             <main className="flex flex-col justify-center h-screen gap-2 p-4 md:mx-auto md:max-w-md">
                 {!gameFinished ? (
