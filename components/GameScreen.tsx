@@ -17,7 +17,6 @@ export const GameScreen = (props: GameScreenProps) => {
         let item = { ...players[index] };
         item.score[rounds[currentRound]] = parseFloat(newScore);
         players[index] = item;
-        console.log(players);
         props.setPlayers(players);
     }
     return (
