@@ -9,6 +9,10 @@ export function getEmptyScores(): Score {
     return rounds.reduce((x: Partial<Score>, round) => ((x[round] = 0), x), {}) as Score;
 }
 
+export function titleCase(string: string) {
+    return string[0].toUpperCase() + string.slice(1).toLowerCase();
+}
+
 export function getThemes(): string[] {
     return [
         "light",

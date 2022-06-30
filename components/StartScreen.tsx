@@ -1,5 +1,5 @@
 import { useEffect, ChangeEvent, Dispatch, SetStateAction } from "react";
-import { getEmptyScores, getThemes } from "../Funcs/global";
+import { getEmptyScores, getThemes, titleCase } from "../Funcs/global";
 import { Player } from "../Types/global";
 
 // @ts-ignore
@@ -76,7 +76,7 @@ export const StartScreen = (props: StartScreenProps) => {
             <select className="w-full select select-bordered" data-choose-theme>
                 {themes.map((theme, index) => (
                     <option key={index} value={theme}>
-                        {theme}
+                        {titleCase(theme)}
                     </option>
                 ))}
             </select>
