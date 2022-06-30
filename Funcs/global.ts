@@ -6,11 +6,21 @@ export function getAllRounds(): Round[] {
 
 export function getEmptyScores(): Score {
     const rounds = getAllRounds();
-    return rounds.reduce((x: Partial<Score>, round) => ((x[round] = 0), x), {}) as Score;
+    return rounds.reduce((x: Partial<Score>, round) => ((x[round] = ""), x), {}) as Score;
 }
 
 export function titleCase(string: string) {
     return string[0].toUpperCase() + string.slice(1).toLowerCase();
+}
+
+export function calculateTotalScore(playerScore: Score) {
+    let totalScore = 0;
+    Object.values(playerScore).forEach((score) => {
+        if (typeof score === "number") {
+            totalScore += score;
+        }
+    });
+    return totalScore;
 }
 
 export function getThemes(): string[] {

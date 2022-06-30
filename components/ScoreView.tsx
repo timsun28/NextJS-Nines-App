@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-import { getEmptyScores } from "../Funcs/global";
+import { calculateTotalScore, getEmptyScores } from "../Funcs/global";
 import { Player } from "../Types/global";
 
 interface ScoreViewProps {
@@ -12,8 +12,8 @@ type TotalScore = { [key: string]: number };
 export const ScoreView = (props: ScoreViewProps) => {
     let totalScores: TotalScore = {};
     props.players.forEach((player) => {
-        const sumValues = Object.values(player.score).reduce((a, b) => a + b);
-        totalScores[player.name] = sumValues;
+        const totalScore = calculateTotalScore(player.score);
+        totalScores[player.name] = totalScore;
     });
 
     const sorted = Object.fromEntries(Object.entries(totalScores).sort(([, a], [, b]) => a - b));
