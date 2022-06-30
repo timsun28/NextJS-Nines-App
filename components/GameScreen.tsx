@@ -29,13 +29,13 @@ export const GameScreen = (props: GameScreenProps) => {
                 <span className="text-accent">{props.players[currentRound % props.players.length].name}</span>
             </p>
             <hr></hr>
-            <p className="text-lg">Final scores</p>
+            <p className="text-lg">Scores (leave empty if the player won)</p>
             {props.players.map((player, index) => (
                 <div key={index} className="flex flex-row items-center justify-between gap-2">
                     <span className="w-1/4">{player.name}</span>
                     <input
                         type="number"
-                        className="w-3/4 max-w-xs input input-bordered"
+                        className="w-3/4 input input-bordered"
                         value={player.score[rounds[currentRound]]}
                         onChange={(e) => updateScore(e, index)}
                     />

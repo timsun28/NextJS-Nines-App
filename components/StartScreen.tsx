@@ -35,7 +35,7 @@ export const StartScreen = (props: StartScreenProps) => {
                     key={index}
                     type="text"
                     placeholder={`Player ${index + 1}`}
-                    className="w-full max-w-xs input input-bordered"
+                    className="w-full input input-bordered"
                     value={player.name}
                     onChange={(e) => updateName(e, index)}
                 />
@@ -73,7 +73,7 @@ export const StartScreen = (props: StartScreenProps) => {
             <label className="label">
                 <span className="label-text">Choose your theme</span>
             </label>
-            <select className="w-full max-w-xs select select-bordered" data-choose-theme>
+            <select className="w-full select select-bordered" data-choose-theme>
                 {themes.map((theme, index) => (
                     <option key={index} value={theme}>
                         {theme}
