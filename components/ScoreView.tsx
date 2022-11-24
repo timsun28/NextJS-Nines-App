@@ -31,7 +31,7 @@ export const ScoreView = (props: ScoreViewProps) => {
     return (
         <>
             <p className="text-2xl">
-                Congratulation <span className="text-2xl text-accent">{Object.keys(sorted)[0]} </span>
+                Congratulation <span className="text-2xl text-primary">{Object.keys(sorted)[0]} </span>
                 on winning the game!
             </p>
             <hr></hr>

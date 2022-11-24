@@ -22,11 +22,11 @@ export const GameScreen = (props: GameScreenProps) => {
     return (
         <>
             <p className="text-5xl">
-                The <span className="text-primary-content">{rounds[currentRound]}</span> is hot!
+                The <span className="text-primary">{rounds[currentRound]}</span> is hot!
             </p>
             <p className="text-2xl">
                 Player to start:{" "}
-                <span className="text-primary-content">{props.players[currentRound % props.players.length].name}</span>
+                <span className="text-primary">{props.players[currentRound % props.players.length].name}</span>
             </p>
             <hr></hr>
             <p className="text-lg">Scores (leave empty if the player won)</p>
