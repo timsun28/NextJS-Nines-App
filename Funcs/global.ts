@@ -57,8 +57,8 @@ export function getThemes(): string[] {
     ];
 }
 
-export function saveGameState(players: Player[]): void {
-    let buff = new Buffer(JSON.stringify(players));
+export function saveGameState(players: Player[], currentRound: number): void {
+    let buff = new Buffer(JSON.stringify({players, currentRound}));
     localStorage.setItem('gameState', buff.toString('base64'));
 }
 
@@ -66,10 +66,10 @@ export function finishedGame(): void {
     localStorage.clear();
 }
 
-export function loadGameState(): Player[] {
+export function loadGameState(): { players: Player[], currentRound: number } | null {
     const gameState = localStorage.getItem('gameState');
 
-    if (gameState === null) return [];
+    if (gameState === null) return null;
 
-    return JSON.parse(new Buffer(gameState, 'base64').toString('utf-8')) as Player[];
+    return JSON.parse(new Buffer(gameState, 'base64').toString('utf-8')) as { players: Player[], currentRound: number };
 }
