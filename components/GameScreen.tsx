@@ -1,5 +1,5 @@
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
-import { calculateTotalScore, getAllRounds } from "../Funcs/global";
+import {calculateTotalScore, finishedGame, getAllRounds, saveGameState} from "../Funcs/global";
 import { Player } from "../Types/global";
 
 interface GameScreenProps {
@@ -18,7 +18,14 @@ export const GameScreen = (props: GameScreenProps) => {
         item.score[rounds[currentRound]] = parseFloat(newScore);
         players[index] = item;
         props.setPlayers(players);
+        saveGameState(players);
     }
+
+    function endGame(): void {
+        props.setGameFinished(true)
+        finishedGame()
+    }
+
     return (
         <>
             <p className="text-5xl">
@@ -57,7 +64,7 @@ export const GameScreen = (props: GameScreenProps) => {
                     onClick={() =>
                         currentRound + 1 < rounds.length
                             ? setCurrentRound(currentRound + 1)
-                            : props.setGameFinished(true)
+                            : endGame()
                     }
                 >
                     Next Round

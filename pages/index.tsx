@@ -15,6 +15,7 @@ const Home: NextPage = () => {
         { name: "", score: getEmptyScores() },
         { name: "", score: getEmptyScores() },
     ]);
+    const [previousPlayers, setPreviousPlayers] = useState<Player[]>([])
 
     return (
         <div>
@@ -36,7 +37,7 @@ const Home: NextPage = () => {
                 {!gameFinished ? (
                     <>
                         {!gameStarted ? (
-                            <StartScreen players={players} setPlayers={setPlayers} setGameStarted={setGameStarted} />
+                            <StartScreen players={players} previousPlayers={previousPlayers} setPlayers={setPlayers} setPreviousPlayers={setPreviousPlayers} setGameStarted={setGameStarted} />
                         ) : (
                             <GameScreen players={players} setPlayers={setPlayers} setGameFinished={setGameFinished} />
                         )}{" "}
