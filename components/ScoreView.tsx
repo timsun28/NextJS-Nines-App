@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { calculateTotalScore, getEmptyScores } from "../Funcs/global";
 import { Player } from "../Types/global";
 

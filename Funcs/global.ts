@@ -59,11 +59,11 @@ export function getThemes(): string[] {
 
 export function saveGameState(players: Player[]): void {
     let buff = new Buffer(JSON.stringify(players));
-    localStorage.setItem('gameState', buff.toString('base64'))
+    localStorage.setItem('gameState', buff.toString('base64'));
 }
 
 export function finishedGame(): void {
-    localStorage.clear()
+    localStorage.clear();
 }
 
 export function loadGameState(): Player[] {

@@ -16,10 +16,10 @@ interface StartScreenProps {
 export const StartScreen = (props: StartScreenProps) => {
     useEffect(() => {
         themeChange(false);
-        // 👆 false parameter is required for react
+        // 👆 false parameter is required for react project
 
-        props.setPreviousPlayers(loadGameState())
-    }, []);
+        props.setPreviousPlayers(loadGameState());
+    }, [props]);
 
     const themes = getThemes();
 
@@ -33,13 +33,13 @@ export const StartScreen = (props: StartScreenProps) => {
 
     function continueGame() {
         saveGameState(props.previousPlayers);
-        props.setPlayers(props.previousPlayers)
-        props.setGameStarted(true)
+        props.setPlayers(props.previousPlayers);
+        props.setGameStarted(true);
     }
 
     function startGame() {
         saveGameState(props.players);
-        props.setGameStarted(true)
+        props.setGameStarted(true);
     }
 
     return (
@@ -69,7 +69,7 @@ export const StartScreen = (props: StartScreenProps) => {
                 >
                     Add new Player
                 </button>
-                <button className="gap-2 btn btn-primary" onClick={ () => startGame() } >
+                <button className="gap-2 btn btn-primary" onClick={ () => startGame()}>
                     Start Game
                     <svg
                         xmlns="http://www.w3.org/2000/svg"

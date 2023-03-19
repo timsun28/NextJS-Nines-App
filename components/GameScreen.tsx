@@ -21,9 +21,9 @@ export const GameScreen = (props: GameScreenProps) => {
         saveGameState(players);
     }
 
-    function endGame(): void {
-        props.setGameFinished(true)
-        finishedGame()
+    function endGame() {
+        props.setGameFinished(true);
+        finishedGame();
     }
 
     return (
