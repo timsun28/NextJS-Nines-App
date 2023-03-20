@@ -1,4 +1,4 @@
-import { Round, Score } from "../Types/global";
+import {Player, Round, Score} from "../Types/global";
 
 export function getAllRounds(): Round[] {
     return ["K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2", "A"];
@@ -55,4 +55,21 @@ export function getThemes(): string[] {
         "coffee",
         "winter",
     ];
+}
+
+export function saveGameState(players: Player[], currentRound: number): void {
+    let buff = new Buffer(JSON.stringify({players, currentRound}));
+    localStorage.setItem('gameState', buff.toString('base64'));
+}
+
+export function finishedGame(): void {
+    localStorage.clear();
+}
+
+export function loadGameState(): { players: Player[], currentRound: number } | null {
+    const gameState = localStorage.getItem('gameState');
+
+    if (gameState === null) return null;
+
+    return JSON.parse(new Buffer(gameState, 'base64').toString('utf-8')) as { players: Player[], currentRound: number };
 }

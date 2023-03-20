@@ -1,6 +1,9 @@
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
-import { calculateTotalScore, getAllRounds } from "../Funcs/global";
+import {ChangeEvent, Dispatch, SetStateAction, useEffect, useState} from "react";
+import {calculateTotalScore, finishedGame, getAllRounds, loadGameState, saveGameState} from "../Funcs/global";
 import { Player } from "../Types/global";
+import {themeChange} from "theme-change";
+import {Simulate} from "react-dom/test-utils";
+import load = Simulate.load;
 
 interface GameScreenProps {
     players: Player[];
@@ -11,6 +14,16 @@ interface GameScreenProps {
 export const GameScreen = (props: GameScreenProps) => {
     const rounds = getAllRounds();
     const [currentRound, setCurrentRound] = useState<number>(0);
+
+    useEffect(() => {
+        const gameState = loadGameState()
+        console.log(gameState)
+
+        if (gameState != null) {
+            setCurrentRound(gameState.currentRound)
+        }
+    }, [setCurrentRound])
+
     function updateScore(event: ChangeEvent<HTMLInputElement>, index: number) {
         const newScore = event.currentTarget.value;
         let players = [...props.players];
@@ -18,7 +31,14 @@ export const GameScreen = (props: GameScreenProps) => {
         item.score[rounds[currentRound]] = parseFloat(newScore);
         players[index] = item;
         props.setPlayers(players);
+        saveGameState(players, currentRound);
     }
+
+    function endGame() {
+        props.setGameFinished(true);
+        finishedGame();
+    }
+
     return (
         <>
             <p className="text-5xl">
@@ -57,7 +77,7 @@ export const GameScreen = (props: GameScreenProps) => {
                     onClick={() =>
                         currentRound + 1 < rounds.length
                             ? setCurrentRound(currentRound + 1)
-                            : props.setGameFinished(true)
+                            : endGame()
                     }
                 >
                     Next Round

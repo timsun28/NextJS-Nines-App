@@ -1,5 +1,5 @@
 import { useEffect, ChangeEvent, Dispatch, SetStateAction } from "react";
-import { getEmptyScores, getThemes, titleCase } from "../Funcs/global";
+import {getEmptyScores, getThemes, loadGameState, saveGameState, titleCase} from "../Funcs/global";
 import { Player } from "../Types/global";
 
 // @ts-ignore
@@ -7,7 +7,11 @@ import { themeChange } from "theme-change";
 
 interface StartScreenProps {
     players: Player[];
+    previousPlayers: Player[];
+    previousRound: number;
     setPlayers: Dispatch<SetStateAction<Player[]>>;
+    setPreviousPlayers: Dispatch<SetStateAction<Player[]>>;
+    setPreviousRound: Dispatch<SetStateAction<number>>
     setGameStarted: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -15,14 +19,37 @@ export const StartScreen = (props: StartScreenProps) => {
     useEffect(() => {
         themeChange(false);
         // 👆 false parameter is required for react project
-    }, []);
+
+        const gameState = loadGameState()
+        if (gameState != null) {
+            props.setPreviousPlayers(gameState.players);
+            props.setPreviousRound(gameState.currentRound)
+        } else {
+            props.setPreviousPlayers([]);
+            props.setPreviousRound(0);
+        }
+
+    }, [props.setPreviousPlayers, props.setPreviousRound]);
+
     const themes = getThemes();
+
     function updateName(event: ChangeEvent<HTMLInputElement>, index: number) {
         let players = [...props.players];
         let item = { ...players[index] };
         item.name = event?.currentTarget.value;
         players[index] = item;
         props.setPlayers(players);
+    }
+
+    function continueGame() {
+        saveGameState(props.previousPlayers, props.previousRound);
+        props.setPlayers(props.previousPlayers);
+        props.setGameStarted(true);
+    }
+
+    function startGame() {
+        saveGameState(props.players, 0);
+        props.setGameStarted(true);
     }
 
     return (
@@ -52,7 +79,7 @@ export const StartScreen = (props: StartScreenProps) => {
                 >
                     Add new Player
                 </button>
-                <button className="gap-2 btn btn-primary" onClick={() => props.setGameStarted(true)}>
+                <button className="gap-2 btn btn-primary" onClick={startGame}>
                     Start Game
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -70,6 +97,16 @@ export const StartScreen = (props: StartScreenProps) => {
                     </svg>
                 </button>
             </div>
+            {props.previousPlayers.length != 0 &&
+                <div className="flex justify-center">
+                    <button className="btn btn-primary w-full" onClick={continueGame}>
+                        Continue Game (
+                        {props.previousPlayers.map((player, f) => f < 3 && <p key={f}>{player.name}{f + 1 != props.previousPlayers.length && ','}</p>)}
+                        {props.previousPlayers.length > 2 && <p>...</p>}
+                        )
+                    </button>
+                </div>
+            }
             <label className="label">
                 <span className="label-text">Choose your theme</span>
             </label>
