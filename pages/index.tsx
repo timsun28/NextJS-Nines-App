@@ -34,7 +34,7 @@ const Home: NextPage = () => {
 
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
             </Head>
-            <main className="flex flex-col justify-center h-screen gap-2 p-4 md:mx-auto md:max-w-md">
+            <main className="flex flex-col justify-center min-h-screen gap-2 p-4 md:mx-auto md:max-w-md">
                 {!gameFinished ? (
                     <>
                         {!gameStarted ? (

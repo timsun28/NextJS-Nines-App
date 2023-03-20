@@ -67,6 +67,7 @@ export const GameScreen = ({ players, setPlayers, setGameFinished }: GameScreenP
                             onChange={(e) => updateScore(e, index)}
                         />
                     </div>
+                    <span>Amount of Jokers: (optional)</span>
                     <div className="w-full flex gap-2">
                         {amountOfJokers.map((joker) => (
                             <span
@@ -80,6 +81,7 @@ export const GameScreen = ({ players, setPlayers, setGameFinished }: GameScreenP
                             </span>
                         ))}
                     </div>
+                    <hr></hr>
                 </Fragment>
             ))}{" "}
             <div className="flex justify-between">
