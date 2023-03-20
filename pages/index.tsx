@@ -5,17 +5,17 @@ import { useState } from "react";
 import { GameScreen } from "../components/GameScreen";
 import { ScoreView } from "../components/ScoreView";
 import { StartScreen } from "../components/StartScreen";
-import { getEmptyScores } from "../Funcs/global";
-import { Player } from "../Types/global";
+import { getEmptyScores } from "../funcs/global";
+import { Player } from "../types/global";
 
 const Home: NextPage = () => {
     const [gameStarted, setGameStarted] = useState<boolean>(false);
     const [gameFinished, setGameFinished] = useState<boolean>(false);
     const [players, setPlayers] = useState<Player[]>([
-        { name: "", score: getEmptyScores() },
-        { name: "", score: getEmptyScores() },
+        { name: "", score: getEmptyScores(), jokers: getEmptyScores() },
+        { name: "", score: getEmptyScores(), jokers: getEmptyScores() },
     ]);
-    const [previousPlayers, setPreviousPlayers] = useState<Player[]>([])
+    const [previousPlayers, setPreviousPlayers] = useState<Player[]>([]);
     const [previousRound, setPreviousRound] = useState<number>(0);
 
     return (
@@ -38,7 +38,15 @@ const Home: NextPage = () => {
                 {!gameFinished ? (
                     <>
                         {!gameStarted ? (
-                            <StartScreen players={players} previousPlayers={previousPlayers} previousRound={previousRound} setPlayers={setPlayers} setPreviousPlayers={setPreviousPlayers} setPreviousRound={setPreviousRound} setGameStarted={setGameStarted} />
+                            <StartScreen
+                                players={players}
+                                previousPlayers={previousPlayers}
+                                previousRound={previousRound}
+                                setPlayers={setPlayers}
+                                setPreviousPlayers={setPreviousPlayers}
+                                setPreviousRound={setPreviousRound}
+                                setGameStarted={setGameStarted}
+                            />
                         ) : (
                             <GameScreen players={players} setPlayers={setPlayers} setGameFinished={setGameFinished} />
                         )}{" "}

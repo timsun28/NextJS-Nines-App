@@ -7,4 +7,5 @@ export type Score = {
 export interface Player {
     name: string;
     score: Score;
+    jokers: Score;
 }

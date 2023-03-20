@@ -1,6 +1,6 @@
 import { useEffect, ChangeEvent, Dispatch, SetStateAction } from "react";
-import {getEmptyScores, getThemes, loadGameState, saveGameState, titleCase} from "../Funcs/global";
-import { Player } from "../Types/global";
+import { getEmptyScores, getThemes, loadGameState, saveGameState, titleCase } from "../funcs/global";
+import { Player } from "../types/global";
 
 // @ts-ignore
 import { themeChange } from "theme-change";
@@ -11,53 +11,61 @@ interface StartScreenProps {
     previousRound: number;
     setPlayers: Dispatch<SetStateAction<Player[]>>;
     setPreviousPlayers: Dispatch<SetStateAction<Player[]>>;
-    setPreviousRound: Dispatch<SetStateAction<number>>
+    setPreviousRound: Dispatch<SetStateAction<number>>;
     setGameStarted: Dispatch<SetStateAction<boolean>>;
 }
 
-export const StartScreen = (props: StartScreenProps) => {
+export const StartScreen = ({
+    players,
+    previousPlayers,
+    previousRound,
+    setPlayers,
+    setPreviousPlayers,
+    setPreviousRound,
+    setGameStarted,
+}: StartScreenProps) => {
     useEffect(() => {
         themeChange(false);
         // 👆 false parameter is required for react project
 
-        const gameState = loadGameState()
+        const gameState = loadGameState();
         if (gameState != null) {
-            props.setPreviousPlayers(gameState.players);
-            props.setPreviousRound(gameState.currentRound)
+            setPreviousPlayers(gameState.players);
+            setPreviousRound(gameState.currentRound);
         } else {
-            props.setPreviousPlayers([]);
-            props.setPreviousRound(0);
+            setPreviousPlayers([]);
+            setPreviousRound(0);
         }
-
-    }, [props.setPreviousPlayers, props.setPreviousRound]);
+    }, [setPreviousPlayers, setPreviousRound]);
 
     const themes = getThemes();
 
     function updateName(event: ChangeEvent<HTMLInputElement>, index: number) {
-        let players = [...props.players];
-        let item = { ...players[index] };
-        item.name = event?.currentTarget.value;
-        players[index] = item;
-        props.setPlayers(players);
+        // Update the player name in the previous players list based on the index
+        setPlayers((currentPlayers) => {
+            const newPlayers = [...currentPlayers];
+            newPlayers[index].name = event.target.value;
+            return newPlayers;
+        });
     }
 
     function continueGame() {
-        saveGameState(props.previousPlayers, props.previousRound);
-        props.setPlayers(props.previousPlayers);
-        props.setGameStarted(true);
+        saveGameState(previousPlayers, previousRound);
+        setPlayers(previousPlayers);
+        setGameStarted(true);
     }
 
     function startGame() {
-        saveGameState(props.players, 0);
-        props.setGameStarted(true);
+        saveGameState(players, 0);
+        setGameStarted(true);
     }
 
     return (
         <>
-            <h1 className="text-2xl">Welcome to Nines Score App</h1>
+            <h1 className="text-2xl">Welcome to the Nines Score App</h1>
             <p>Start by adding your players here:</p>
             <p>Player 1 will start the game</p>
-            {props.players.map((player, index) => (
+            {players.map((player, index) => (
                 <input
                     key={index}
                     type="text"
@@ -71,10 +79,10 @@ export const StartScreen = (props: StartScreenProps) => {
                 <button
                     className="gap-2 btn btn-secondary"
                     onClick={(event) => {
-                        if (props.players.length >= 6) {
+                        if (players.length >= 6) {
                             return;
                         }
-                        props.setPlayers([...props.players, { name: "", score: getEmptyScores() }]);
+                        setPlayers([...players, { name: "", score: getEmptyScores(), jokers: getEmptyScores() }]);
                     }}
                 >
                     Add new Player
@@ -97,16 +105,15 @@ export const StartScreen = (props: StartScreenProps) => {
                     </svg>
                 </button>
             </div>
-            {props.previousPlayers.length != 0 &&
+            {previousPlayers.length != 0 && (
                 <div className="flex justify-center">
                     <button className="btn btn-primary w-full" onClick={continueGame}>
-                        Continue Game (
-                        {props.previousPlayers.map((player, f) => f < 3 && <p key={f}>{player.name}{f + 1 != props.previousPlayers.length && ','}</p>)}
-                        {props.previousPlayers.length > 2 && <p>...</p>}
-                        )
+                        <span className="truncate">
+                            Continue Game ({previousPlayers.map((player) => player.name).join(", ")})
+                        </span>
                     </button>
                 </div>
-            }
+            )}
             <label className="label">
                 <span className="label-text">Choose your theme</span>
             </label>
