@@ -21,7 +21,7 @@ export const GameScreen = ({ players, setPlayers, setGameFinished }: GameScreenP
         if (gameState != null) {
             setCurrentRound(gameState.currentRound);
         }
-    }, [setCurrentRound]);
+    }, []);
 
     function updateScore(event: ChangeEvent<HTMLInputElement>, index: number) {
         const newPlayers = [...players];
