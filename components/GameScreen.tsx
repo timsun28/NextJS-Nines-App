@@ -1,19 +1,18 @@
-import { ChangeEvent, Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
-import { calculateTotalScore, finishedGame, getAllRounds, loadGameState, saveGameState } from "../funcs/global";
-import { Player } from "../types/global";
-import { themeChange } from "theme-change";
-import { Simulate } from "react-dom/test-utils";
-import load = Simulate.load;
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
+import { calculateTotalScore, finishedGame, getAllRounds, loadGameState, saveGameState } from "@/funcs/global";
+import { Player } from "@/types/global";
 
-interface GameScreenProps {
+export const GameScreen = ({
+    players,
+    setPlayers,
+    setGameFinished,
+}: {
     players: Player[];
     setPlayers: Dispatch<SetStateAction<Player[]>>;
     setGameFinished: Dispatch<SetStateAction<boolean>>;
-}
-
-export const GameScreen = ({ players, setPlayers, setGameFinished }: GameScreenProps) => {
+}) => {
     const rounds = getAllRounds();
-    const [currentRound, setCurrentRound] = useState<number>(0);
+    const [currentRound, setCurrentRound] = useState(0);
 
     useEffect(() => {
         const gameState = loadGameState();
@@ -23,25 +22,8 @@ export const GameScreen = ({ players, setPlayers, setGameFinished }: GameScreenP
         }
     }, []);
 
-    function updateScore(event: ChangeEvent<HTMLInputElement>, index: number) {
-        const newPlayers = [...players];
-        newPlayers[index].score[rounds[currentRound]] = parseFloat(event.target.value) || 0;
-        setPlayers(newPlayers);
-        saveGameState(newPlayers, currentRound);
-    }
-
-    function updateJokers(amountOfJokers: number, index: number) {
-        const newPlayers = [...players];
-        newPlayers[index].jokers[rounds[currentRound]] = amountOfJokers;
-        setPlayers(newPlayers);
-        saveGameState(newPlayers, currentRound);
-    }
-
-    function endGame() {
-        setGameFinished(true);
-        finishedGame();
-    }
     const amountOfJokers = [0, 1, 2, 3, 4, 5, 6, 7];
+
     return (
         <>
             <p className="text-5xl">
@@ -64,7 +46,12 @@ export const GameScreen = ({ players, setPlayers, setGameFinished }: GameScreenP
                             className="w-3/4 input input-bordered"
                             placeholder="0"
                             value={player.score[rounds[currentRound]]}
-                            onChange={(e) => updateScore(e, index)}
+                            onChange={(e) => {
+                                const newPlayers = [...players];
+                                newPlayers[index].score[rounds[currentRound]] = parseFloat(e.target.value) || 0;
+                                setPlayers(newPlayers);
+                                saveGameState(newPlayers, currentRound);
+                            }}
                         />
                     </div>
                     <span>Amount of Jokers: (optional)</span>
@@ -72,7 +59,12 @@ export const GameScreen = ({ players, setPlayers, setGameFinished }: GameScreenP
                         {amountOfJokers.map((joker) => (
                             <span
                                 key={joker}
-                                onClick={() => updateJokers(joker, index)}
+                                onClick={() => {
+                                    const newPlayers = [...players];
+                                    newPlayers[index].jokers[rounds[currentRound]] = joker;
+                                    setPlayers(newPlayers);
+                                    saveGameState(newPlayers, currentRound);
+                                }}
                                 className={`flex cursor-pointer items-center justify-center grow rounded-lg p-2 border border-gray-400 ${
                                     player.jokers[rounds[currentRound]] === joker && "bg-primary text-white"
                                 }`}
@@ -83,7 +75,7 @@ export const GameScreen = ({ players, setPlayers, setGameFinished }: GameScreenP
                     </div>
                     <hr></hr>
                 </Fragment>
-            ))}{" "}
+            ))}
             <div className="flex justify-between">
                 <button
                     className="gap-2 btn btn-primary"
@@ -93,7 +85,14 @@ export const GameScreen = ({ players, setPlayers, setGameFinished }: GameScreenP
                 </button>
                 <button
                     className="gap-2 btn btn-primary"
-                    onClick={() => (currentRound + 1 < rounds.length ? setCurrentRound(currentRound + 1) : endGame())}
+                    onClick={() => {
+                        if (currentRound + 1 < rounds.length) {
+                            setCurrentRound(currentRound + 1);
+                        } else {
+                            setGameFinished(true);
+                            finishedGame();
+                        }
+                    }}
                 >
                     Next Round
                 </button>

@@ -67,7 +67,7 @@ if (!self.define) {
     });
   };
 }
-define(['./workbox-e34f44db'], (function (workbox) { 'use strict';
+define(['./workbox-8817a5e5'], (function (workbox) { 'use strict';
 
   importScripts();
   self.skipWaiting();
@@ -81,11 +81,13 @@ define(['./workbox-e34f44db'], (function (workbox) { 'use strict';
         event,
         state
       }) => {
-        if (response && response.type === "opaqueredirect") return new Response(response.body, {
-          status: 200,
-          statusText: "OK",
-          headers: response.headers
-        });
+        if (response && response.type === 'opaqueredirect') {
+          return new Response(response.body, {
+            status: 200,
+            statusText: 'OK',
+            headers: response.headers
+          });
+        }
         return response;
       }
     }]

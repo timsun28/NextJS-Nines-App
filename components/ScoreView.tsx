@@ -1,19 +1,24 @@
 import { Dispatch, SetStateAction } from "react";
-import { calculateTotalScore, getEmptyScores } from "../funcs/global";
-import { Player } from "../types/global";
+import { calculateTotalScore, getEmptyScores } from "@/funcs/global";
+import { Player } from "@/types/global";
 import { ScoreGraph } from "./ScoreGraph";
+import { PlayAgainButton } from "@/components/PlayAgainButton";
 
-interface ScoreViewProps {
+export const ScoreView = ({
+    players,
+    setPlayers,
+    setGameStarted,
+    setGameFinished,
+}: {
     players: Player[];
     setPlayers: Dispatch<SetStateAction<Player[]>>;
     setGameStarted: Dispatch<SetStateAction<boolean>>;
     setGameFinished: Dispatch<SetStateAction<boolean>>;
-}
-
-export const ScoreView = ({ players, setPlayers, setGameStarted, setGameFinished }: ScoreViewProps) => {
+}) => {
     let totalScores: { [key: string]: number } = {};
     let totalWins: { [key: string]: number } = {};
     let totalJokers: { [key: string]: number } = {};
+
     players.forEach((player) => {
         const totalScore = calculateTotalScore(player.score);
         totalScores[player.name] = totalScore;
@@ -32,19 +37,6 @@ export const ScoreView = ({ players, setPlayers, setGameStarted, setGameFinished
 
     const sortedTotalScore = Object.fromEntries(Object.entries(totalScores).sort(([, a], [, b]) => a - b));
 
-    function restartGame() {
-        setPlayers((currentPlayers) => {
-            return currentPlayers.map((player) => {
-                return {
-                    ...player,
-                    score: getEmptyScores(),
-                };
-            });
-        });
-        setGameFinished(false);
-        setGameStarted(false);
-    }
-
     return (
         <>
             <p className="text-2xl">
@@ -61,9 +53,11 @@ export const ScoreView = ({ players, setPlayers, setGameStarted, setGameFinished
                 ))}
             </ul>
             <ScoreGraph players={players} />
-            <button className="self-start gap-2 btn btn-secondary" onClick={restartGame}>
-                Play Again
-            </button>
+            <PlayAgainButton
+                setPlayers={setPlayers}
+                setGameFinished={setGameFinished}
+                setGameStarted={setGameStarted}
+            />
         </>
     );
 };
