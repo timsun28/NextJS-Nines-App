@@ -14,7 +14,6 @@ export default function Home() {
         { name: "", score: getEmptyScores(), jokers: getEmptyScores() },
         { name: "", score: getEmptyScores(), jokers: getEmptyScores() },
     ]);
-    console.log({ players });
     const [previousPlayers, setPreviousPlayers] = useState<Player[]>([]);
     const [previousRound, setPreviousRound] = useState<number>(0);
 
