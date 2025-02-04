@@ -12,7 +12,7 @@ export const metadata: Metadata = {
             { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
         ],
         other: [
-            { rel: "manifest", url: "/site.webmanifest" },
+            { rel: "manifest", url: "/manifest.json" },
             { rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#5bbad5" },
         ],
     },
@@ -31,7 +31,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <body>
+                <main className="flex flex-col justify-center min-h-screen gap-2 p-4 md:mx-auto md:max-w-md">
+                    {children}
+                </main>
+            </body>
         </html>
     );
 }

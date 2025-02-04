@@ -14,34 +14,34 @@ export default function Home() {
         { name: "", score: getEmptyScores(), jokers: getEmptyScores() },
         { name: "", score: getEmptyScores(), jokers: getEmptyScores() },
     ]);
+    console.log({ players });
     const [previousPlayers, setPreviousPlayers] = useState<Player[]>([]);
     const [previousRound, setPreviousRound] = useState<number>(0);
+
+    if (gameFinished) {
+        return (
+            <ScoreView
+                players={players}
+                setPlayers={setPlayers}
+                setGameStarted={setGameStarted}
+                setGameFinished={setGameFinished}
+            />
+        );
+    }
+
+    if (gameStarted) {
+        return <GameScreen players={players} setPlayers={setPlayers} setGameFinished={setGameFinished} />;
+    }
+
     return (
-        <main className="flex flex-col justify-center min-h-screen gap-2 p-4 md:mx-auto md:max-w-md">
-            {!gameFinished ? (
-                <>
-                    {!gameStarted ? (
-                        <StartScreen
-                            players={players}
-                            previousPlayers={previousPlayers}
-                            previousRound={previousRound}
-                            setPlayers={setPlayers}
-                            setPreviousPlayers={setPreviousPlayers}
-                            setPreviousRound={setPreviousRound}
-                            setGameStarted={setGameStarted}
-                        />
-                    ) : (
-                        <GameScreen players={players} setPlayers={setPlayers} setGameFinished={setGameFinished} />
-                    )}
-                </>
-            ) : (
-                <ScoreView
-                    players={players}
-                    setPlayers={setPlayers}
-                    setGameStarted={setGameStarted}
-                    setGameFinished={setGameFinished}
-                />
-            )}
-        </main>
+        <StartScreen
+            players={players}
+            previousPlayers={previousPlayers}
+            previousRound={previousRound}
+            setPlayers={setPlayers}
+            setPreviousPlayers={setPreviousPlayers}
+            setPreviousRound={setPreviousRound}
+            setGameStarted={setGameStarted}
+        />
     );
 }

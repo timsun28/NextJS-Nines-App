@@ -1,3 +1,5 @@
+"use client";
+
 import { getThemes, titleCase } from "@/funcs/global";
 import { useEffect } from "react";
 import { themeChange } from "theme-change";

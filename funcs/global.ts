@@ -67,6 +67,12 @@ export function getThemes(): string[] {
         "night",
         "coffee",
         "winter",
+        "dim",
+        "nord",
+        "sunset",
+        "caramellatte",
+        "abyss",
+        "silk",
     ];
 }
 
