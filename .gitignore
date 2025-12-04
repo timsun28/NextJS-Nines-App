@@ -36,7 +36,3 @@ yarn-error.log*
 
 # workspace folder for jetbrains products
 .idea/
-
-# Serwist
-public/sw*
-public/swe-worker*
