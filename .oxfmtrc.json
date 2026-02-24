@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "semi": true,
+  "sortTailwindcss": {
+    "stylesheet": "./styles/globals.css",
+    "functions": [
+      "clsx",
+      "cn"
+    ],
+    "preserveWhitespace": true
+  },
+  "tabWidth": 4,
+  "printWidth": 80,
+  "sortPackageJson": false,
+  "ignorePatterns": []
+}
