@@ -10,29 +10,36 @@ export const StartGameButton = ({
   setGameStarted: Dispatch<SetStateAction<boolean>>;
   saveGameState: (players: Player[], round: number) => void;
 }) => {
+  const handleStart = () => {
+    // Fill empty names with default names "Player 1", "Player 2" etc.
+    const normalizedPlayers = players.map((player, idx) => {
+      const trimmedName = player.name.trim();
+      return {
+        ...player,
+        name: trimmedName ? trimmedName : `Player ${idx + 1}`,
+      };
+    });
+
+    saveGameState(normalizedPlayers, 0);
+    setGameStarted(true);
+  };
+
   return (
     <button
-      className="gap-2 btn btn-primary"
-      onClick={() => {
-        saveGameState(players, 0);
-        setGameStarted(true);
-      }}
+      type="button"
+      className="btn btn-primary rounded-2xl flex-1 justify-center gap-2 font-bold shadow-lg shadow-primary/25 hover:shadow-primary/35 hover:scale-[1.02] active:scale-95 transition-all duration-300"
+      onClick={handleStart}
     >
       Start Game
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        className="w-6 h-6"
-        fill="none"
+        fill="currentColor"
         viewBox="0 0 24 24"
-        stroke="currentColor"
+        className="w-4 h-4"
       >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          strokeWidth="2"
-          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-        />
+        <path d="M8 5v14l11-7z" />
       </svg>
     </button>
   );
 };
+
